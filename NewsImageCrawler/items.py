@@ -10,12 +10,4 @@ import scrapy
 
 class SubWebsiteItem(scrapy.Item):
     name = scrapy.Field()
-    sub_sub_websites = scrapy.Field()
-
-
-class SubSubWebsiteItem(scrapy.Item):
-    name = scrapy.Field()
     url = scrapy.Field()
-
-# class cnn_item(scrapy.item):
-#

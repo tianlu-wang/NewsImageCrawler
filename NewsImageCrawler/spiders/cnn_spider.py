@@ -1,5 +1,6 @@
 import scrapy
-from NewsImageCrawler.items import SubWebsiteItem, SubSubWebsiteItem
+import re
+from NewsImageCrawler.items import SubWebsiteItem
 
 class CNN_Spider(scrapy.Spider):
     name = "cnn_spider"
@@ -10,18 +11,22 @@ class CNN_Spider(scrapy.Spider):
 
     def parse(self, response):
         sub_websites = []
-        for footer_bucket in response.xpath('//li[@class="m-footer__title"]'):
-            sub_sub_websites = []
-            for footer_item in footer_bucket.xpath('.//li[@class="m-footer__list-item"]'):
-                sub_sub_website = SubSubWebsiteItem()
-                sub_sub_website['name'] = footer_item.xpath('.//a/text()').extract()
-                sub_sub_website['url'] = footer_item.xpath('.//a/@href').extract()
-                sub_sub_websites.append(sub_sub_website)
+        for item in response.xpath('//li[@class="m-footer__list-item"]'):
             sub_website = SubWebsiteItem()
-            sub_website['name'] = footer_bucket.xpath('.//a[@class="m-footer__title__link"]/text()').extract()
-            sub_website['sub_sub_websites'] = sub_sub_websites
+            sub_website['name'] = item.xpath('.//a/text()').extract_first()
+            sub_website['url'] = item.xpath('.//a/@href').extract_first()
             sub_websites.append(sub_website)
+        for sub_website in sub_websites:
+            if re.match(r'^(http://bleacherreport.com/)', sub_website['url']):
+                pass  # do nothing with bleacherreport website
+            elif re.match(r'^(http|//)', sub_website['url']):
+                yield scrapy.Request(sub_website['url'], callback=self.parse_money)
+            else:
+                yield scrapy.Request(response.urljoin(sub_website['url']), callback=self.parse_cnn)
 
+    def parse_cnn(self, response):
+
+    def parse_money(self, response):
 
 
 
