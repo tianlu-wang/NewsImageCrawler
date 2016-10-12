@@ -39,8 +39,12 @@ class CNN_Spider(scrapy.Spider):
         logging.info(news_list)
         for news in news_list:
             if "money.cnn.com" in news:
+                logging.info("money.cnn.com in news and below is the news url")
+                logging.info(news)
                 yield scrapy.Request(news, callback=self.parse_money)
-            elif "www.cnn.com":
+            elif "index.html" in news:
+                logging.info("www.cnn.com in news and below is the news url")
+                logging.info(news)
                 yield scrapy.Request(response.urljoin(news), callback=self.parse_normal)
             else:
                 logging.warning("some strange line")
@@ -48,19 +52,17 @@ class CNN_Spider(scrapy.Spider):
 
     def parse_normal(self, response):
         tmp = response.xpath('//p[@class="update-time"]/text()').extract_first()
-        print '*******************************'
-        print tmp
+        logging.info("parse normal")
+        logging.info(response.url)
         tmp = tmp.replace('Updated ', '')
         tmp = tmp.replace(' PM ET,', 'PM')
         tmp = tmp.replace(' AM ET,', 'AM')
         tmp = tmp.replace(', ', ' ')
         tmp = tmp.replace("2016 ", "2016")
-        print tmp
-        print '*****************************'
+        tmp = tmp.replace("2015 ", "2015")
         time_update = datetime.strptime(tmp, '%I:%M%p %a %B %d %Y')
         delta = (datetime.now() - time_update).total_seconds()
         if delta < 3600:
-            print response.url
             page = response.url.split("/")[7]
             filename = './output/cnn/16/10/%s.html' % page
             with open(filename, 'wb') as f:
@@ -75,16 +77,14 @@ class CNN_Spider(scrapy.Spider):
 
     def parse_money(self, response):
         tmp = response.xpath('//span[@class="cnnDateStamp"]/text()').extract_first()
-        print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
-        print tmp
+        logging.info('parse money')
+        logging.info(response.url)
         tmp = "*" + tmp
         tmp = tmp.replace('* ', '')
         tmp = tmp.replace(', ', ' ')
         tmp = tmp.replace(': ', ' ')
         tmp = tmp.replace(' PM ET ', 'PM')
         tmp = tmp.replace(' AM ET ', 'AM')
-        print tmp
-        print '$$$$$$$$$$$$$$$$$$$$$$$$$$$##'
         time_update = datetime.strptime(tmp, "%B %d %Y %I:%M%p")
         delta = (datetime.now() - time_update).total_seconds()
         if delta < 3600:

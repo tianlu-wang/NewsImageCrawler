@@ -2,16 +2,13 @@ import scrapy
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-import re
-import logging
 
 
-year = '2012'
+year = '2013'
 link_list = 'assets/link_list/%s.list' % year
-print '************************************************************************************'
-print link_list
-class CNN_Spider_history(scrapy.Spider):
-    name = "cnn_spider_history"
+
+class Time_Spider_history(scrapy.Spider):
+    name = "time_spider_history"
 
     def start_requests(self):
         with open(link_list) as f:
@@ -19,15 +16,6 @@ class CNN_Spider_history(scrapy.Spider):
         for item in content:
             url = 'http://' + item.replace('\n', '')
             yield scrapy.Request(url=url, callback=self.parse_save)
-
-    # def parse(self, response):
-    #     print '888888888888888888888888'
-    #     print response.url
-    #     url = response.headers['Location']
-    #     print '---------------------------'
-    #     print url
-    #     if 'cnn' in url or 'CNN' in url:
-    #         scrapy.Request(url, callback=self.parse_save)
 
     def parse_save(self, response):
         if 'money.cnn.com' in response.url:
