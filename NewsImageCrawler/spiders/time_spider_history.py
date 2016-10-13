@@ -5,7 +5,8 @@ sys.setdefaultencoding('utf8')
 
 
 year = '2013'
-link_list = 'assets/link_list/%s.list' % year
+link_list = 'assets/link_list/time/test.list'
+
 
 class Time_Spider_history(scrapy.Spider):
     name = "time_spider_history"
@@ -14,28 +15,9 @@ class Time_Spider_history(scrapy.Spider):
         with open(link_list) as f:
             content = f.readlines()
         for item in content:
-            url = 'http://' + item.replace('\n', '')
-            yield scrapy.Request(url=url, callback=self.parse_save)
+            url = 'curl "https://twitter.com/i/cards/tfw/v1/%s?cardname=summary_large_image&autoplay_' \
+                  'disabled=true&forward=true&earned=true&lang=en&card_height=344' % item
+            yield scrapy.Request(url=url, callback=self.parse)
 
-    def parse_save(self, response):
-        if 'money.cnn.com' in response.url:
-            print "************************************"
-            print response.url
-            page = response.url.split("/")[8]
-            filename = './output/cnn/%s/%s.html' % (year, page)
-            with open(filename, 'wb') as f:
-                f.write(response.xpath('//main[@class="container js-social-anchor-start"]').extract()[0])
-        elif 'www.cnn.com' in response.url:
-            print "************************************"
-            print response.url
-            page = response.url.split("/")[7]
-            filename = './output/cnn/%s/%s.html' % (year, page)
-            with open(filename, 'wb') as f:
-                divs = response.xpath('//div[@class="l-container"]')
-                for div in divs:
-                    tmp = div.xpath('.//h1/text()').extract()
-                    if not tmp:
-                        pass
-                    else:
-                        f.write(div.extract())
-                        break
+    def parse(self, response):
+        print response
