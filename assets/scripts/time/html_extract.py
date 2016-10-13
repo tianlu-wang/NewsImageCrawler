@@ -11,18 +11,16 @@ def html_extract(html, out):
     for li in ol.find_all("li"):
         try:
             item_id = li['data-item-id']
+            out.write(item_id + '\n')
         except KeyError:
             logging.info('not a time line item')
-        out.write(item_id + '\n')
+    out.close()
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 3:
-    #     print 'USAGE: python html_extract.py <input html> <output file>'
-    #     print 'this script will extract news_link, image_link, title, sub_title from time twitter html'
-    # else:
-    #     html = sys.argv[1]
-    #     out = sys.argv[2]
-    #     out = open(out, 'w')
-    #     html_extract(html, out)
-    html_extract('/home/tianlu/PycharmProjects/NewsImageCrawler/assets/htmls/time/test.html',
-                 '/home/tianlu/PycharmProjects/NewsImageCrawler/assets/htmls/time/test.list')
+    if len(sys.argv) != 2:
+        print 'USAGE: python html_extract.py <input html>'
+        print 'this script will extract news_link, image_link, title, sub_title from time twitter html'
+    else:
+        html = sys.argv[1]
+        out = html.replace('.html', '.ids')
+        html_extract(html, out)

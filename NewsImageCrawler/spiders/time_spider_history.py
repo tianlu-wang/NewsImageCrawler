@@ -1,15 +1,19 @@
 import scrapy
 import sys
+import ast
+import json
 reload(sys)
+
 sys.setdefaultencoding('utf8')
 
 
-year = '2013'
-link_list = 'assets/htmls/time/test.list'
+time = '201601'
+link_list = 'assets/htmls/time/%s.ids' % time
 
 
 class Time_Spider_history(scrapy.Spider):
     name = "time_spider_history"
+    out = open('output/time/list/%s' % time, 'w')  # TODO
 
     def start_requests(self):
         with open(link_list) as f:
@@ -21,4 +25,9 @@ class Time_Spider_history(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
-        print response
+        card_info = json.loads(response.xpath('//script/text()').extract_first().encode('utf-8'))
+        self.out.write(card_info['card']['card_url'] + '\n')
+        self.out.write(response.xpath('//div[@class="tcu-imageWrapper"]/img/@data-src').extract_first() + '\n')
+        self.out.write(response.xpath('//h2/text()').extract_first() + '\n')
+        self.out.write(response.xpath('//p/text()').extract_first() + '\n')
+        self.out.write('\n')

@@ -8,8 +8,6 @@ import logging
 
 year = '2012'
 link_list = 'assets/link_list/%s.list' % year
-print '************************************************************************************'
-print link_list
 class CNN_Spider_history(scrapy.Spider):
     name = "cnn_spider_history"
 
@@ -20,26 +18,13 @@ class CNN_Spider_history(scrapy.Spider):
             url = 'http://' + item.replace('\n', '')
             yield scrapy.Request(url=url, callback=self.parse_save)
 
-    # def parse(self, response):
-    #     print '888888888888888888888888'
-    #     print response.url
-    #     url = response.headers['Location']
-    #     print '---------------------------'
-    #     print url
-    #     if 'cnn' in url or 'CNN' in url:
-    #         scrapy.Request(url, callback=self.parse_save)
-
     def parse_save(self, response):
         if 'money.cnn.com' in response.url:
-            print "************************************"
-            print response.url
             page = response.url.split("/")[8]
             filename = './output/cnn/%s/%s.html' % (year, page)
             with open(filename, 'wb') as f:
                 f.write(response.xpath('//main[@class="container js-social-anchor-start"]').extract()[0])
         elif 'www.cnn.com' in response.url:
-            print "************************************"
-            print response.url
             page = response.url.split("/")[7]
             filename = './output/cnn/%s/%s.html' % (year, page)
             with open(filename, 'wb') as f:
