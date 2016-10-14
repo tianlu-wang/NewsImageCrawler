@@ -13,6 +13,8 @@ I did find the api to get JSON data http://compositor.api.cnn.com/svc/mcs/v3/doc
 For the real time spider, usually get around 90 news every day, also in html format. But I can change it into JSON by using this API:
 http://compositor.api.cnn.com/svc/mcs/v3/composites/sections/cnn/health/rows:15/start:0 It would provide no more than 100(that should be rows:100/start:0) latest news.
 
+#time
+
 
 
 
