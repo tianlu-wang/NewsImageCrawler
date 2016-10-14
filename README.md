@@ -16,5 +16,11 @@ http://compositor.api.cnn.com/svc/mcs/v3/composites/sections/cnn/health/rows:15/
 #time
 
 
+---
+I probably have found the api of washingtonpost, foxnews and NYtimes:
 
+http://api.foxnews.com/proxy/v8/page/module/content/v2/?refName=big%20top&site=fn2&channelPath=/Home/opinion&format=json&fl=taxonomy_path,taxonomy,section,content_type,date,description,title,url,image_url,export_headline&format=json&api_key=fc2c0a7a-53ed-4f8f-9588-9431485db84b
 
+https://rainbowapi-a.wpdigital.net/rainbow-data-service/rainbow/content-by-url.json?followLinks=false&platform=iphoneclassic&url=https%3A//www.washingtonpost.com/news/post-politics/wp/2016/10/14/clinton-plans-to-directly-address-sex-assault-claims-against-trump-aide-says/
+
+http://www.nytimes.com/svc/community/V3/requestHandler?method=get&cmd=GetCommentSummary&path=http://www.nytimes.com/2016/10/13/us/politics/donald-trump-women.html
