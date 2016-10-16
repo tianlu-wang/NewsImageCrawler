@@ -25,6 +25,6 @@ https://rainbowapi-a.wpdigital.net/rainbow-data-service/rainbow/content-by-url.j
 
 http://www.nytimes.com/svc/community/V3/requestHandler?method=get&cmd=GetCommentSummary&path=http://www.nytimes.com/2016/10/13/us/politics/donald-trump-women.html
 
-
+http://api.gannett-cdn.com/mobile/v4/assets/91966950?consumer=ios_iphone&api_key=99saas9t656jt89x3dae4n2d
 let me try time and cnn again...
 BTW, any other new websites? Better with APPs, otherwise I can't get the api!
