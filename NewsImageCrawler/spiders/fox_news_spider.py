@@ -3,17 +3,23 @@ import re
 import logging
 import json
 
-logging.basicConfig(filename='log/fox_news/fox_news.log', filemode='w', level=logging.WARNING)  # TODO: change filemode
+logging.basicConfig(filename='log/fox_news/fox_news.log', format='%(asctime)s %(levelname)s %(message)s',
+                    filemode='a', level=logging.WARNING)  # TODO: change filemode
 logger = logging.getLogger('fox_news_log')
-
-links = 'test/test.links2'  # TODO
 
 
 class fox_news_Spider(scrapy.Spider):
     name = "fox_news_spider"
 
+    def __init__(self, time):
+        self.year = time[:4]
+        self.month = time[4:]
+        self.links = 'assets/htmls/foxnews/%s%s.links2' % (self.year, self.month)  # TODO
+        self.output_path = 'output/fox_news/%s/' % self.year
+
     def start_requests(self):
-        with open(links) as f:
+        logging.info("FILENAME: " + self.links)
+        with open(self.links) as f:
             contents = f.readlines()
         for item in contents:
             api = 'http://api.foxnews.com/proxy/content/v2?q=url:http%%5C://%s&format=json&fl=url,subtitle_url,' \
@@ -34,7 +40,7 @@ class fox_news_Spider(scrapy.Spider):
                     filename = m.group(1).replace("/", "")
                 else:
                     filename = m.group(1)
-                with open('test/'+filename+'.json', 'w') as outfile:
+                with open(self.output_path+filename+'.json', 'w') as outfile:
                     json.dump(jsonresponse, outfile)
             else:
                 logging.warning("PARSE URL FAILED: " + response.url)
