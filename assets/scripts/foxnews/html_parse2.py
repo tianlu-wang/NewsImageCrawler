@@ -1,14 +1,22 @@
 from bs4 import BeautifulSoup
 import sys
 import time
+import re
+# only for tweet before 2011/06/11
+# python assets/scripts/foxnews/html_parse2.py test/test.html
 
-# python assets/scripts/foxnews/html_parse1.py test/test.html
 
-
-def html_parse1(html, out):
+def html_parse2(html, out):
     soup = BeautifulSoup(open(html).read(), 'html.parser')
     for span in soup.find_all('span', attrs={'class', 'js-display-url'}):
+        # print span.text + '\n'
         out.write(span.text + '\n')
+    for div in soup.find_all('div', attrs={'class', 'js-tweet-text-container'}):
+        s = div.find("p").text
+        s = s.encode('utf-8', 'ignore')
+        m = re.search('.*http://(.*)', s)
+        if m:
+            out.write(m.group(1) + '\n')
     out.close()
 
 if __name__ == '__main__':
@@ -20,5 +28,5 @@ if __name__ == '__main__':
         html = sys.argv[1]
         out = html.replace('.html', '.links1')
         out = open(out, 'w')
-        html_parse1(html, out)
+        html_parse2(html, out)
     print("--- %s seconds ---" % (time.time() - start_time))

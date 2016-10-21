@@ -2,7 +2,8 @@ import scrapy
 import re
 import logging
 import json
-
+from scrapy.utils.log import configure_logging
+configure_logging(install_root_handler=False)
 logging.basicConfig(filename='log/fox_news/fox_news.log', format='%(asctime)s %(levelname)s %(message)s',
                     filemode='a', level=logging.WARNING)  # TODO: change filemode
 logger = logging.getLogger('fox_news_log')

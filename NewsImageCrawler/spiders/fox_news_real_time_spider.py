@@ -3,11 +3,12 @@ import re
 import logging
 import json
 import os
-
-logging.basicConfig(filename='log/fox_news/fox_news_real_time.log',
-                    format='%(asctime)s %(levelname)s %(message)s',
-                    filemode='a', level=logging.WARNING)  # TODO: filemode shold ba append
-logger = logging.getLogger('fox_news_real_time_log')
+from scrapy.utils.log import configure_logging
+# configure_logging(install_root_handler=False)
+# logging.basicConfig(filename='log/fox_news/fox_news_real_time.log',
+#                     format='%(asctime)s %(levelname)s %(message)s',
+#                     filemode='a', level=logging.WARNING)  # TODO: filemode shold ba append
+# logger = logging.getLogger('fox_news_real_time_log')
 
 categories = ['politics', 'opinion', 'entertainment', 'tech', 'science', 'health', 'travel', 'leisure', 'world']
 api = "http://api.foxnews.com/proxy/content/v2?q=content_type:%%28article%%20slideshow%%20listpage%%29%%20AND%%" \

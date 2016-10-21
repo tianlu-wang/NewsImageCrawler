@@ -49,4 +49,4 @@ if __name__ == '__main__':
     else:
         links1 = sys.argv[1]
         url_parse(links1)
-    logging.info("--- %s seconds ---" % (time.time() - start_time))
+    print("--- %s seconds ---" % (time.time() - start_time))
