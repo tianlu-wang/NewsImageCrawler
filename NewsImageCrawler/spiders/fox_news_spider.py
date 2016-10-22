@@ -2,11 +2,12 @@ import scrapy
 import re
 import logging
 import json
-from scrapy.utils.log import configure_logging
-configure_logging(install_root_handler=False)
-logging.basicConfig(filename='log/fox_news/fox_news.log', format='%(asctime)s %(levelname)s %(message)s',
-                    filemode='a', level=logging.WARNING)  # TODO: change filemode
-logger = logging.getLogger('fox_news_log')
+import os
+# from scrapy.utils.log import configure_logging
+# configure_logging(install_root_handler=False)
+# logging.basicConfig(filename='log/fox_news/fox_news.log', format='%(asctime)s %(levelname)s %(message)s',
+#                     filemode='a', level=logging.WARNING)  # TODO: change filemode
+# logger = logging.getLogger('fox_news_log')
 
 
 class fox_news_Spider(scrapy.Spider):
@@ -41,8 +42,13 @@ class fox_news_Spider(scrapy.Spider):
                     filename = m.group(1).replace("/", "")
                 else:
                     filename = m.group(1)
-                with open(self.output_path+filename+'.json', 'w') as outfile:
-                    json.dump(jsonresponse, outfile)
+
+                filepath = self.output_path + filename + '.json'
+                if os.path.isfile(filepath):  # hope can save some time
+                    pass
+                else:
+                    with open(filepath, 'w') as outfile:
+                        json.dump(jsonresponse, outfile)
             else:
                 logging.warning("PARSE URL FAILED: " + response.url)
 

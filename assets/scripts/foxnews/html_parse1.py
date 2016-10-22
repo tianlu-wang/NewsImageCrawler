@@ -9,6 +9,9 @@ def html_parse1(html, out):
     soup = BeautifulSoup(open(html).read(), 'html.parser')
     for span in soup.find_all('span', attrs={'class', 'js-display-url'}):
         out.write(span.text + '\n')
+    # for a in soup.find_all('a', attrs={'class', 'twitter-timeline-link u-hidden'}):
+    #     out.write('find something: ')
+    #     out.write(a['href'] + '\n')
     out.close()
 
 if __name__ == '__main__':
